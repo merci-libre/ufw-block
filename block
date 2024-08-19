@@ -1,0 +1,20 @@
+#!/bin/bash
+
+ip=$1
+
+block_ip() {
+  if [[ "$UID" == 0 ]];then
+    ufw deny from "$ip" && ufw reload
+    echo "ufw blocks the ip: $ip"
+  else
+    echo "ufw does nothing to $ip"
+  fi
+}
+
+if [[ $1 == "" ]];then
+  echo "you blocked nothing."
+elif [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3} ]]; then
+  block_ip
+else
+  echo "block failed to run, probably because you entered the string: $ip"
+fi
